@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://nova-ai.vercel.app/logo.png" alt="Nova AI Logo" width="100" />
+<img src="public/logo1.png" alt="Nova AI Logo" width="100" />
 
 </div>
 
