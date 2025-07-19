@@ -10,7 +10,7 @@ import {
 } from '@codesandbox/sandpack-react';
 import Lookup from '@/data/Lookup';
 import { MessagesContext } from '@/context/MessagesContext';
-import Prompt from '@/data/Prompt';
+// Prompt now in Lookup.PROMPT
 import axios from 'axios';
 import { useConvex, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
@@ -49,8 +49,17 @@ function CodeView() {
     const result = await convex.query(api.workspace.GetWorkspace, {
       workspaceId: id,
     });
-    const mergedFils = { ...Lookup.DEFAULT_FILE, ...result?.fileData };
-    setFiles(mergedFils);
+    let mergedFils = { ...Lookup.DEFAULT_FILE, ...result?.fileData };
+    // Ensure /App.js and /index.js are present
+    if (!mergedFils['/App.js']) {
+      console.warn('AI output missing /App.js, using default');
+      mergedFils['/App.js'] = Lookup.DEFAULT_FILE['/App.js'];
+    }
+    if (!mergedFils['/index.js']) {
+      console.warn('AI output missing /index.js, using default');
+      mergedFils['/index.js'] = Lookup.DEFAULT_FILE['/index.js'];
+    }
+    setFiles(ensureValidFiles(mergedFils));
     setLoading(false);
   };
 
@@ -72,7 +81,7 @@ function CodeView() {
     }
     // return;
     setLoading(true);
-    const PROMPT = JSON.stringify(messages) + ' ' + Prompt.CODE_GEN_PROMPT;
+    const PROMPT = JSON.stringify(messages) + ' ' + Lookup.PROMPT.CODE_GEN_PROMPT;
     console.log({ PROMPT });
     const result = await axios.post('/api/gen-ai-code', {
       prompt: PROMPT,
@@ -80,8 +89,17 @@ function CodeView() {
 
     console.log(result?.data);
     const aiResp = result.data;
-    const mergedFiles = { ...Lookup.DEFAULT_FILE, ...aiResp?.files };
-    setFiles(mergedFiles);
+    let mergedFiles = { ...Lookup.DEFAULT_FILE, ...aiResp?.files };
+    // Ensure /App.js and /index.js are present
+    if (!mergedFiles['/App.js']) {
+      console.warn('AI output missing /App.js, using default');
+      mergedFiles['/App.js'] = Lookup.DEFAULT_FILE['/App.js'];
+    }
+    if (!mergedFiles['/index.js']) {
+      console.warn('AI output missing /index.js, using default');
+      mergedFiles['/index.js'] = Lookup.DEFAULT_FILE['/index.js'];
+    }
+    setFiles(ensureValidFiles(mergedFiles));
     await UpdateFiles({
       workspaceId: id,
       files: aiResp?.files,
@@ -161,6 +179,27 @@ function CodeView() {
       )}
     </div>
   );
+}
+
+// Ensure all files are valid objects with a code property (string)
+function ensureValidFiles(files) {
+  const requiredFiles = ['/App.js', '/index.js'];
+  for (const file of requiredFiles) {
+    if (
+      !files[file] ||
+      typeof files[file] !== 'object' ||
+      typeof files[file].code !== 'string'
+    ) {
+      files[file] = { code: Lookup.DEFAULT_FILE[file]?.code || '' };
+    }
+  }
+  // Remove any files that are not objects with a code property
+  Object.keys(files).forEach((key) => {
+    if (!files[key] || typeof files[key].code !== 'string') {
+      delete files[key];
+    }
+  });
+  return files;
 }
 
 export default CodeView;

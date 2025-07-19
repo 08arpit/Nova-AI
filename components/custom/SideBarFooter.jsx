@@ -44,7 +44,12 @@ function SideBarFooter() {
     // Handle sign out if needed
     if (option.name === 'Sign Out') {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('user');
+        if (userDetail?.isDemo) {
+          localStorage.removeItem('user');
+          localStorage.removeItem('messages');
+        } else {
+          localStorage.removeItem('user');
+        }
         window.location.reload();
       }
     }

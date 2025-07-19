@@ -3,9 +3,7 @@ import { MessagesContext } from '@/context/MessagesContext';
 import { UserDetailContext } from '@/context/UserDetailContext';
 import { ActionContext } from '@/context/ActionContext';
 import { api } from '@/convex/_generated/api';
-import Colors from '@/data/Colors';
 import Lookup from '@/data/Lookup';
-import Prompt from '@/data/Prompt';
 import axios from 'axios';
 import { useConvex, useMutation } from 'convex/react';
 import { ArrowRight, Loader2Icon } from 'lucide-react';
@@ -69,7 +67,7 @@ function ChatView() {
     // Switch to code view when user sends a message
     setAction({ actionType: 'code' });
     
-    const PROMPT = JSON.stringify(messages) + Prompt.CHAT_PROMPT;
+    const PROMPT = JSON.stringify(messages) + Lookup.PROMPT.CHAT_PROMPT;
     console.log({ PROMPT });
     const result = await axios.post('/api/ai-chat', {
       prompt: PROMPT,
@@ -181,7 +179,7 @@ function ChatView() {
       </div>
 
       {/* Input Section */}
-      <div className="relative p-3 border-t border-gray-800" style={{ backgroundColor: Colors.BACKGROUND }}>
+      <div className="relative p-3 border-t border-gray-800" style={{ backgroundColor: Lookup.COLORS.BACKGROUND }}>
         <div className="flex-1 relative">
           <textarea
             placeholder="What would you like to add or modify?"

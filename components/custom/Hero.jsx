@@ -1,9 +1,8 @@
 'use client';
 import { MessagesContext } from '@/context/MessagesContext';
 import { UserDetailContext } from '@/context/UserDetailContext';
-import Colors from '@/data/Colors';
 import Lookup from '@/data/Lookup';
-import { ArrowRight, Link } from 'lucide-react';
+import { ArrowRight, Link, Loader2 } from 'lucide-react';
 import React, { useContext, useState } from 'react';
 import SignInDialog from './SignInDialog';
 import { useMutation } from 'convex/react';
@@ -16,6 +15,7 @@ function Hero() {
   const { messages, setMessages } = useContext(MessagesContext);
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
   const CreateWorkspace = useMutation(api.workspace.CreateWorkspace);
   const router = useRouter();
 
@@ -30,6 +30,7 @@ function Hero() {
     }
 
     try {
+      setLoading(true);
       console.log('User Detail:', userDetail);
       
       if (!userDetail._id) {
@@ -60,6 +61,8 @@ function Hero() {
     } catch (error) {
       console.error('Error creating workspace:', error);
       toast.error('Failed to create workspace: ' + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,21 +76,27 @@ function Hero() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-12 px-4">
-      <div className="w-full max-w-4xl mx-auto flex flex-col items-center gap-4">
-        <h2 className="font-bold text-4xl text-center">{Lookup.HERO_HEADING}</h2>
-        <p className="text-gray-400 font-medium text-center">{Lookup.HERO_DESC}</p>
+    <div className="flex flex-col items-center justify-center h-full px-4">
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <Loader2 className="w-10 h-10 text-blue-400 animate-spin" />
+          <span className="ml-4 text-lg text-white font-medium">Creating workspace...</span>
+        </div>
+      )}
+      <div className="w-full max-w-4xl mx-auto flex flex-col items-center gap-4 mt-20">
+        <h2 className="font-bold text-4xl text-center mt-4">{Lookup.HERO_HEADING}</h2>
+        <p className="text-gray-300 font-medium text-center">{Lookup.HERO_DESC}</p>
         <div
           className="p-5 border rounded-xl w-full mt-3"
           style={{
-            backgroundColor: Colors.BACKGROUND,
+            backgroundColor: Lookup.COLORS.BACKGROUND,
           }}
         >
           <div className="flex gap-2"
           >
           <textarea
             placeholder={Lookup.INPUT_PLACEHOLDER}
-            className="outline-none bg-transparent w-full h-32 max-h-56 resize-none text-neutral-200"
+            className="outline-none bg-transparent w-full h-28 max-h-56 resize-none text-neutral-200"
             onChange={(event) => setUserInput(event.target.value)}
             onKeyPress={handleKeyPress}
             value={userInput}

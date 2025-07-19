@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React, { useContext } from 'react';
 import { Button } from '../ui/button';
-import Colors from '@/data/Colors';
+import Lookup from '@/data/Lookup';
 import { UserDetailContext } from '@/context/UserDetailContext';
 import Link from 'next/link';
 import { Download, Menu, Rocket } from 'lucide-react';
@@ -46,6 +46,22 @@ function Header({ onMenuClick }) {
         </div>
       ) : (
         <div className="flex gap-5 items-center">
+          {userDetail?.isDemo && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                // Remove user and chats from localStorage
+                localStorage.removeItem('user');
+                localStorage.removeItem('messages');
+                // Optionally clear context messages if available
+                if (typeof window !== 'undefined') {
+                  window.location.href = '/';
+                }
+              }}
+            >
+              Logout
+            </Button>
+          )}
           {pathname.includes('/workspace/') && (
             <>
               <Button variant="ghost" onClick={() => onActionBtn('export')}>
@@ -60,13 +76,32 @@ function Header({ onMenuClick }) {
             </>
           )}
           {userDetail && (
-            <Image
-              src={userDetail?.picture}
-              alt="userImage"
-              width={40}
-              height={40}
-              className="rounded-full cursor-pointer object-cover"
-            />
+            userDetail?.picture ? (
+              <button
+                onClick={onMenuClick}
+                aria-label="Open sidebar"
+                className="focus:outline-none"
+              >
+                <Image
+                  src={userDetail.picture}
+                  alt="userImage"
+                  width={40}
+                  height={40}
+                  className="rounded-full cursor-pointer object-cover"
+                />
+              </button>
+            ) : (
+              <button
+                onClick={onMenuClick}
+                aria-label="Open sidebar"
+                className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center cursor-pointer focus:outline-none"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-300">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </button>
+            )
           )}
         </div>
       )}

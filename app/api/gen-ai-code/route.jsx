@@ -12,16 +12,18 @@ export async function POST(req) {
             );
         }
 
+        console.log("[GEN-AI-CODE] Prompt:", prompt);
         const result = await GenAiCode.sendMessage(prompt);
         const resp = result.response.text();
+        console.log("[GEN-AI-CODE] Raw AI response:", resp);
         
         try {
             const parsedResponse = JSON.parse(resp);
             return NextResponse.json(parsedResponse);
         } catch (parseError) {
-            console.error("Failed to parse AI response:", parseError);
+            console.error("Failed to parse AI response:", parseError, resp);
             return NextResponse.json(
-                { error: "Invalid response format from AI" },
+                { error: "Invalid response format from AI", details: resp, parseError: parseError.message },
                 { status: 500 }
             );
         }
@@ -29,7 +31,7 @@ export async function POST(req) {
     } catch (error) {
         console.error("AI code generation error:", error);
         return NextResponse.json(
-            { error: "Failed to generate code" },
+            { error: "Failed to generate code", details: error.message },
             { status: 500 }
         );
     }

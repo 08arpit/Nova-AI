@@ -74,6 +74,52 @@ function SignInDialog({ openDialog, closeDialog }) {
             <img src="/google.svg" alt="Google" className="w-5 h-5" />
             Continue with Google
           </Button>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-gray-700" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-[#181818] px-2 text-gray-400">or</span>
+            </div>
+          </div>
+
+          <Button
+            onClick={async () => {
+              const unique = Date.now();
+              const demoEmail = `demo-${unique}@nova.ai`;
+              const demoUid = `demo-${unique}`;
+              const userId = await CreateUser({
+                name: "Demo User",
+                email: demoEmail,
+                picture: "",
+                uid: demoUid,
+              });
+              const demoUser = {
+                name: "Demo User",
+                email: demoEmail,
+                picture: "",
+                _id: userId, // Real Convex ID
+                token: 1000,
+                isDemo: true
+              };
+              if (typeof window !== "undefined") {
+                localStorage.setItem("user", JSON.stringify(demoUser));
+              }
+              setUserDetail(demoUser);
+              closeDialog(false);
+            }}
+            variant="ghost"
+            size="sm"
+            className="w-auto px-6 py-2 text-sm border border-gray-600 hover:bg-gray-800 text-gray-300 font-medium transition-all duration-200 rounded-lg"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Skip Sign In (Limited Tokens)
+          </Button>
+
           <div className="space-y-2">
             <p className="text-xs text-center text-gray-400">
               By continuing, you agree to Nova AI's Terms of Service and Privacy Policy.

@@ -21,10 +21,10 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning className="h-full">
-      <body className="min-h-screen flex flex-col">
+      <body className="h-full flex flex-col overflow-hidden">
         <ConvexClientProvider>
           <Provider>
-            <main className="flex-1 flex flex-col">
+            <main className="flex-1 flex flex-col overflow-hidden">
               {children}
             </main>
           </Provider>

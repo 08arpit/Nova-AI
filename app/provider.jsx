@@ -10,7 +10,7 @@ import { api } from '@/convex/_generated/api';
 import { ActionContext } from '@/context/ActionContext';
 import { useRouter } from 'next/navigation';
 import { WavyBackground } from '@/components/ui/wavy-background';
-import Colors from '@/data/Colors';
+import Lookup from '@/data/Lookup';
 import AppSideBar from '@/components/custom/AppSideBar';
 
 function Provider({ children }) {
@@ -70,11 +70,11 @@ function Provider({ children }) {
     <div className="relative w-full h-screen overflow-hidden">
       <WavyBackground
         containerClassName="absolute inset-0 -z-10 pointer-events-none"
-        colors={[Colors.BLUE, Colors.LABEL, Colors.SUBHEADING, Colors.BACKGROUND, Colors.CHAT_BACKGROUND]}
-        backgroundFill={Colors.BACKGROUND}
+        colors={[Lookup.COLORS.BLUE, Lookup.COLORS.LABEL, Lookup.COLORS.SUBHEADING, Lookup.COLORS.BACKGROUND, Lookup.COLORS.CHAT_BACKGROUND]}
+        backgroundFill={Lookup.COLORS.BACKGROUND}
         waveOpacity={0.4}
         blur={12}
-        speed="fast"
+        speed="very-fast"
       />
       <GoogleOAuthProvider
         clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID_KEY}
