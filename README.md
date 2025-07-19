@@ -145,9 +145,6 @@ Contributions are welcome! To contribute:
 - **Google login issues?** Verify your OAuth credentials and redirect URIs.
 - **Other issues?** Check the [issues](https://github.com/08arpit/Nova-AI/issues) page or open a new one.
 
-## 📄 License
-
-This project is open source under the MIT License.
 
 ---
 
