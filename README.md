@@ -72,4 +72,83 @@ code-mind-ai-bolt-clone/
 ├── postcss.config.mjs        # PostCSS configuration
 └── tailwind.config.mjs       # Tailwind CSS configuration
 
+## 🚀 Getting Started
+
+Follow these steps to set up and run Nova AI locally:
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/08arpit/Nova-AI.git
+cd Nova-AI
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+# or
+pnpm install
+# or
+yarn install
+```
+
+### 3. Configure Environment Variables
+
+Copy the example environment file and fill in your credentials:
+
+```bash
+cp .env.example .env.local
+# Edit .env.local with your API keys and configuration
+```
+
+**Required variables:**
+- `NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID_KEY` – Google OAuth client ID
+- `NEXT_PUBLIC_CONVEX_URL` – Convex backend URL
+- `CONVEX_DEPLOYMENT` – Convex deployment name
+- `NEXT_PUBLIC_GEMINI_API_KEY` – Google Gemini API key
+
+### 4. Run the Development Server
+
+```bash
+npm run dev
+# or
+pnpm dev
+# or
+yarn dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to view the app.
+
+## 🧑‍💻 Usage
+
+- **Sign in** with Google to access your workspace.
+- **Create or join workspaces** to collaborate and generate code with AI.
+- **Chat with the AI** for code suggestions, explanations, and more.
+- **Preview and edit code** live with Sandpack integration.
+- **Upgrade plans** securely via PayPal for additional features.
+
+## 🤝 Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit: `git commit -m 'Add new feature'`
+4. Push to your fork: `git push origin feature/your-feature-name`
+5. Open a Pull Request describing your changes.
+
+## 🛠 Troubleshooting & FAQ
+
+- **App not starting?** Ensure all environment variables are set and dependencies installed.
+- **Convex errors?** Double-check your Convex deployment and URL.
+- **Google login issues?** Verify your OAuth credentials and redirect URIs.
+- **Other issues?** Check the [issues](https://github.com/08arpit/Nova-AI/issues) page or open a new one.
+
+## 📄 License
+
+This project is open source under the MIT License.
+
+---
+
 Crafted with ❤️ by Arpit. Let's revolutionize coding together with Nova AI! 🎉
